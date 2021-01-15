@@ -1,2 +1,4 @@
 # octopus-ml
-A collection of handy ML and data visualization and validation tools
+
+Set of handy ML and data tools - from data exploration, visualization, pre-processing, hyper parameter tuning, modeling and all the way to final Ml model evaluation 
+![Image](/images/octopus_know_your_data.png)
