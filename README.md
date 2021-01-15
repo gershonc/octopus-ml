@@ -25,13 +25,11 @@ To run the tests, execute the command `python setup.py test`
 
 
 
-# Usage
-The module contains one class:
-
-## 
+#3 Usage
+The module contains ML and Data related methods:
 
 ```python
-from octopus_ml import plot_imp, adjusted_classes,cv,cv_plot,roc_curve_plot
+from octopus_ml import plot_imp, adjusted_classes,cv,cv_plot,roc_curve_plot, ...
 
 
 ```
