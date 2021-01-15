@@ -30,8 +30,6 @@ The module contains one class:
 
 ## 
 
-The `DataFrameSummary` expect a pandas `DataFrame` to summarise.
-
 ```python
 from octopus_ml import plot_imp, adjusted_classes,cv,cv_plot,roc_curve_plot
 
