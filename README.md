@@ -25,7 +25,7 @@ To run the tests, execute the command `python setup.py test`
 
 
 
-#3 Usage
+## Usage
 The module contains ML and Data related methods:
 
 ```python
