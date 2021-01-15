@@ -5,7 +5,7 @@ from .octopus_ml import cv_plot
 from .octopus_ml import roc_curve_plot
 from .octopus_ml import confusion_matrix_plot
 from .octopus_data import sampling_within_group
-from .octopus_data import anomalies 
+from .octopus_data import anomalies
 from .octopus_data import correlations
 from .octopus_data import recieve_fps
 from .octopus_data import recieve_fns
