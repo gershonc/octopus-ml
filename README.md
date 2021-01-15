@@ -1,8 +1,6 @@
 # octopus-ml
  
- image:: https://img.shields.io/pypi/v/eli5.svg
-   :target: https://pypi.python.org/pypi/eli5
-   :alt: PyPI Version
+[![PyPI Latest Release](https://img.shields.io/pypi/v/octopus-ml.svg)](https://pypi.org/project/octopus-ml/)
 [![Build Status](https://travis-ci.com/pandas-profiling/octopus-ml.svg?branch=master)](https://travis-ci.com/octopus-ml/octopus-ml)
 [![Code Coverage](https://codecov.io/gh/pandas-profiling/octopus-ml/branch/master/graph/badge.svg?token=gMptB4YUnF)](https://codecov.io/gh/octopus-ml/octopus-ml)
 [![Release Version](https://img.shields.io/github/release/octopus-ml/octopus-ml.svg)](https://github.com/gershonc/octopus-ml/releases)
