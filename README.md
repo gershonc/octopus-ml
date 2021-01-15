@@ -1,5 +1,6 @@
 # octopus-ml
-.. image:: https://img.shields.io/pypi/v/eli5.svg
+ 
+ image:: https://img.shields.io/pypi/v/eli5.svg
    :target: https://pypi.python.org/pypi/eli5
    :alt: PyPI Version
 [![Build Status](https://travis-ci.com/pandas-profiling/octopus-ml.svg?branch=master)](https://travis-ci.com/octopus-ml/octopus-ml)
