@@ -24,3 +24,16 @@ This module depends on `numpy` and `pandas`. Optionally you can get also some ni
 To run the tests, execute the command `python setup.py test`
 
 
+
+# Usage
+The module contains one class:
+
+## 
+
+The `DataFrameSummary` expect a pandas `DataFrame` to summarise.
+
+```python
+from octopus_ml import plot_imp, adjusted_classes,cv,cv_plot,roc_curve_plot
+
+
+```
