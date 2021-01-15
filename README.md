@@ -6,9 +6,8 @@
 [![Python Version](https://img.shields.io/pypi/pyversions/pandas-profiling)](https://pypi.org/project/octopus-ml/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
 
-https://pypi.org/project/octopus-ml/
-pip install octopus-ml
-
+Set of handy ML and data tools - from data exploration, visualization, pre-processing, hyper parameter tuning, modeling and all the way to final Ml model evaluation 
+![Image](/images/octopus_know_your_data.png)
 
 ## Installation
 The module can be easily installed with pip:
@@ -16,6 +15,7 @@ The module can be easily installed with pip:
 ```conslole
 > pip install octopus-ml
 ```
+https://pypi.org/project/octopus-ml/
 
 This module depends on `numpy` and `pandas`. Optionally you can get also some nice visualisations if you have `matplotlib` installed.
 
@@ -35,5 +35,3 @@ from pandas_summary import DataFrameSummary
 dfs = DataFrameSummary(df)
 ```
 
-Set of handy ML and data tools - from data exploration, visualization, pre-processing, hyper parameter tuning, modeling and all the way to final Ml model evaluation 
-![Image](/images/octopus_know_your_data.png)
