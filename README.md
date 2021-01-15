@@ -9,5 +9,31 @@
 https://pypi.org/project/octopus-ml/
 pip install octopus-ml
 
+
+# Installation
+The module can be easily installed with pip:
+
+```conslole
+> pip install octopus-ml
+```
+
+This module depends on `numpy` and `pandas`. Optionally you can get also some nice visualisations if you have `matplotlib` installed.
+
+# Tests
+To run the tests, execute the command `python setup.py test`
+
+# Usage
+The module contains one class:
+
+## DataFrameSummary
+
+The `DataFrameSummary` expect a pandas `DataFrame` to summarise.
+
+```python
+from pandas_summary import DataFrameSummary
+
+dfs = DataFrameSummary(df)
+```
+
 Set of handy ML and data tools - from data exploration, visualization, pre-processing, hyper parameter tuning, modeling and all the way to final Ml model evaluation 
 ![Image](/images/octopus_know_your_data.png)
