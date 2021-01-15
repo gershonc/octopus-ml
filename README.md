@@ -10,7 +10,7 @@ https://pypi.org/project/octopus-ml/
 pip install octopus-ml
 
 
-# Installation
+## Installation
 The module can be easily installed with pip:
 
 ```conslole
@@ -19,10 +19,10 @@ The module can be easily installed with pip:
 
 This module depends on `numpy` and `pandas`. Optionally you can get also some nice visualisations if you have `matplotlib` installed.
 
-# Tests
+## Tests
 To run the tests, execute the command `python setup.py test`
 
-# Usage
+## Usage
 The module contains one class:
 
 ## DataFrameSummary
