@@ -17,7 +17,6 @@ The module can be easily installed with pip:
 ```conslole
 > pip install octopus-ml
 ```
-https://pypi.org/project/octopus-ml/
 
 This module depends on `Scikit-learn`, `numpy`, `pandas`, `light GBM` as defualt classifier. Optionally you can get also some nice visualisations if you have `seaborn` installed.
 
