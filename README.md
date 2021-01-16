@@ -18,7 +18,7 @@ The module can be easily installed with pip:
 > pip install octopus-ml
 ```
 
-This module depends on `Scikit-learn`, `numpy`, `pandas`, `light GBM` as defualt classifier. Optionally you can get also some nice visualisations if you have `seaborn` installed.
+This module depends on `Scikit-learn`, `numpy`, `pandas`, `TQDM`, `lightGBM` as defualt classifier. Optionally you can get also some nice visualisations if you have `seaborn` installed.
 
 
 
@@ -27,6 +27,5 @@ The module contains ML and Data related methods:
 
 ```python
 from octopus_ml import plot_imp, adjusted_classes,cv,cv_plot,roc_curve_plot, ...
-
 
 ```
