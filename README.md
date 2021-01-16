@@ -9,7 +9,7 @@
 [![Code Coverage](https://codecov.io/gh/pandas-profiling/octopus-ml/branch/master/graph/badge.svg?token=gMptB4YUnF)](https://codecov.io/gh/octopus/octopus)
 -->
 Set of handy ML and data tools - from data exploration, visualization, pre-processing, hyper parameter tuning, modeling and all the way to final Ml model evaluation 
-<br><img src="/images/octopus_know_your_data.png" width="470" height="400" />
+<br><center><img src="/images/octopus_know_your_data.png" width="570" height="480" /></center>
 
 ## Installation
 The module can be easily installed with pip:
