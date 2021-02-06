@@ -5,11 +5,11 @@ with open("README.md", "r") as fh:
 
 setup(
     name="octopus-ml",
-    version="0.1.0",
+    version="0.1.4",
     description="A collection of handy ML and data validation tools",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    packages=["octopus-ml"],
+    packages=["octopus_ml"],
     author="Gershon Celniker",
     author_email="gershonc@gmail.com",
     url="https://github.com/gershonc/octopus-ml",
