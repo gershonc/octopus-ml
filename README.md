@@ -26,6 +26,6 @@ This module depends on `Scikit-learn`, `NumPy`, `Pandas`, `TQDM`, `lightGBM` as 
 The module contains ML and Data related methods:
 
 ```python
-from octopus_ml import plot_imp, adjusted_classes, cv,c v_plot, roc_curve_plot, ...
+from octopus_ml import plot_imp, adjusted_classes, cv, cv_plot, roc_curve_plot, ...
 
 ```
