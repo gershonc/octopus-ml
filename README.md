@@ -29,4 +29,4 @@ The module contains ML and Data related methods:
 from octopus_ml import plot_imp, adjusted_classes, cv, cv_plot, roc_curve_plot, ...
 
 ```
-<br><center><img src="/images/cv_report_roc.PNG.png" /></center>
+<br><center><img src="/images/cv_report_roc.PNG" /></center>
