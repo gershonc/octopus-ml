@@ -264,8 +264,10 @@ def cv(X, y, threshold, iterations, shuffle=True, params=None):
             arr_f1_positive, f1_score(y_test, predictions, average="binary")
         )
 
+        final_clf = lgbm(X, y, X_test, y_test, iterations, params)
+
     return (
-        clf,
+        final_clf,
         arr_f1_weighted,
         arr_f1_macro,
         arr_f1_positive,
