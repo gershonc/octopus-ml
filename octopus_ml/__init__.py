@@ -1,6 +1,7 @@
 from .octopus_ml import plot_imp
 from .octopus_ml import adjusted_classes
 from .octopus_ml import cv
+from .octopus_ml import cv_adv
 from .octopus_ml import cv_plot
 from .octopus_ml import roc_curve_plot
 from .octopus_ml import confusion_matrix_plot

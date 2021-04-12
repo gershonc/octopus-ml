@@ -54,31 +54,9 @@ def correlations(df, cols):
     )
 
 
-def recieve_fns(df, df_cols, index, y_folds, preds_folds, threshold=5, top=20):
-    # Returns a list of FNs with low score
-    # preds_labels=pd.DataFrame(df[index],y_folds,preds_folds, columns=['index','label','preds'])
-    preds_labels = pd.DataFrame(y_folds, columns=["label"])
-    preds_labels.index = df.loc[:, index]
-    preds_labels["preds_proba"] = preds_folds
-    preds_labels["preds_class"] = preds_labels["preds_proba"].apply(
-        lambda x: 1 if x > threshold else 0
-    )
-    if threshold != 0.5:
-        print("recieved threshold of: ", threshold, "\n")
-    else:
-        print("calculating using threshold of: ", threshold)
-    preds_labels_sorted = preds_labels[preds_labels["label"] == 1].sort_values(
-        by="preds_proba", ascending=True
-    )
-    print(preds_labels_sorted.head(top))
-    return preds_labels_sorted
-
-
-def recieve_fps(df, df_cols, index, y_folds, preds_folds, threshold=5, top=20):
-    # Returns a list of FPs with high score
-    # preds_labels=pd.DataFrame(df[index],y_folds,preds_folds, columns=['index','label','preds'])
-    preds_labels = pd.DataFrame(y_folds, columns=["label"])
-    preds_labels.index = df.loc[:, index]
+def recieve_fps(df, index, y_folds, preds_folds, threshold=0.5, top=10):
+    preds_labels = pd.DataFrame(index, columns=['index'])
+    preds_labels['label'] = y_folds
     preds_labels["preds_proba"] = preds_folds
     preds_labels["preds_class"] = preds_labels["preds_proba"].apply(
         lambda x: 1 if x > threshold else 0
@@ -88,11 +66,27 @@ def recieve_fps(df, df_cols, index, y_folds, preds_folds, threshold=5, top=20):
     else:
         print("calculating using threshold of: ", threshold)
     preds_labels_sorted = preds_labels[preds_labels["label"] == 0].sort_values(
+        by="preds_proba", ascending=False
+    )
+    return preds_labels_sorted.head(top).reset_index(drop=True)
+
+    
+def recieve_fns(df, index, y_folds, preds_folds, threshold=0.5, top=10):
+    preds_labels = pd.DataFrame(index, columns=['index'])
+    preds_labels['label'] = y_folds
+    preds_labels["preds_proba"] = preds_folds
+    preds_labels["preds_class"] = preds_labels["preds_proba"].apply(
+        lambda x: 1 if x > threshold else 0
+    )
+    if threshold != 0.5:
+        print("recieved threshold of: ", threshold, "\n")
+    else:
+        print("calculating using threshold of: ", threshold)
+        
+    preds_labels_sorted = preds_labels[preds_labels["label"] == 1].sort_values(
         by="preds_proba", ascending=True
     )
-    print(preds_labels_sorted.head(top))
-    return preds_labels_sorted
-
+    return preds_labels_sorted.head(top).reset_index(drop=True)
 
 @timer
 @mem_measure
