@@ -173,6 +173,30 @@ def cv_plot(arr_f1_weighted, arr_f1_macro, arr_f1_positive, AxisName):
     plt.legend(["F1 macro", "F1 positive"], loc="upper right", fontsize=14)
     plt.grid(True)
 
+def preds_distribution(y_true, y_pred, bins=100, title='Predictions Distribution', normalize=False, ax=None,
+                            figsize=None, title_fontsize='large', max_y=None):
+    sns.set_style("whitegrid")
+    if ax is None:
+        fig, ax = plt.subplots(1, 1, figsize=(10,6))
+    
+    predictions_proba=np.array(y_pred)
+    y_bool=np.array(y_true)>0
+    y_pred_true = predictions_proba[y_bool]
+    y_pred_false = predictions_proba[~y_bool]
+    
+    #print (y_pred_true)
+    # matplotlib normalize is using the bin width, just calculate it by our own...
+    weights_false = np.ones(len(y_pred_false)) / len(y_pred_false) if normalize else None
+    weights_true = np.ones(len(y_pred_true)) / len(y_pred_true) if normalize else None
+
+    ax.hist(y_pred_false, bins=bins, color='r', alpha=0.5, label='negative', weights=weights_false)
+    ax.hist(y_pred_true, bins=bins, color='g', alpha=0.5, label='positive', weights=weights_true)
+    ax.set_title(title, fontsize=title_fontsize)
+    #_set_lim(max_y, ax.set_ylim)
+    ax.legend(loc='best')
+
+    return ax
+
 
 def lgbm(X_train, y_train, X_test, y_test, num, params=None):
     # Training function for LGBM with basic categorical features treatment and close to default params
