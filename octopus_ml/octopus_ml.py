@@ -23,6 +23,7 @@ from sklearn.model_selection import KFold
 from sklearn.metrics import f1_score
 from sklearn.model_selection import StratifiedKFold
 from .misc import mem_measure, timer
+from sklearn.linear_model import LassoCV
 
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -41,7 +42,7 @@ warnings.simplefilter(action="ignore", category=FutureWarning)
 
 # ML visualizations
 
-def plot_imp(clf, X, title, model="lgbm", num=30):
+def plot_imp(clf, X, title, model="lgbm", num=30, importaince_type="gain"):
     # Feature importance plot supporting LGBM, RN and Catboost, return the list of features importance sorted by their contribution
     sns.set_style("whitegrid")
 
@@ -52,7 +53,7 @@ def plot_imp(clf, X, title, model="lgbm", num=30):
     elif model == "lgbm":
         feature_imp = pd.DataFrame(
             {
-                "Value": clf.feature_importance(importance_type="gain"),
+                "Value": clf.feature_importance(importance_type=importaince_type),
                 "Feature": X.columns,
             }
         )
@@ -62,7 +63,7 @@ def plot_imp(clf, X, title, model="lgbm", num=30):
         )
 
 
-    plt.figure(figsize=(16, num/2))
+    plt.figure(figsize=(16, num/1.7))
     sns.set(font_scale=1.1)
     sns.barplot(
         color="#3498db",
@@ -85,7 +86,7 @@ def confusion_matrix_plot(y_test, y_predict):
     cmn = cm.astype("float") / cm.sum(axis=1)[:, np.newaxis] * 100
     sns.set(font_scale=1.1)
     labels = ["0", "1"]
-    plt.figure(figsize=(7, 5.5))
+    plt.figure(figsize=(6.5, 5.5))
     # sns.heatmap(cm, xticklabels = labels, yticklabels = labels, annot = True, fmt='d', cmap="Blues", vmin = 0.2);
     sns.heatmap(
         cmn, xticklabels=labels, yticklabels=labels, annot=True, fmt=".2f", cmap="Blues"
@@ -100,7 +101,7 @@ def confusion_matrix_plot(y_test, y_predict):
     cmn = cm.astype("int")
     sns.set(font_scale=1.1)
     labels = ["0", "1"]
-    plt.figure(figsize=(7, 5.5))
+    plt.figure(figsize=(6.5, 5.5))
     # sns.heatmap(cm, xticklabels = labels, yticklabels = labels, annot = True, fmt='d', cmap="Blues", vmin = 0.2);
     sns.heatmap(
         cmn, xticklabels=labels, yticklabels=labels, annot=True, fmt="d", cmap="Blues"
@@ -111,6 +112,52 @@ def confusion_matrix_plot(y_test, y_predict):
     plt.show()
 
 
+
+def target_corr(X,y,df_cols):
+    # Feature correlationsto the target 
+
+    #catCols = X.select_dtypes(object").columns
+    catCols=X[df_cols].select_dtypes(include=['category', object]).columns
+
+    #print (catCols)
+    X = X[df_cols].drop(columns=catCols)
+    
+    #reg = LassoCV(n_alphas=30, eps=1e-3, max_iter=20, precompute=False)
+    reg = LassoCV()
+    reg.fit(X.fillna(-1), y)
+
+    sns.set_style("whitegrid")
+    #print("Best alpha using built-in LassoCV: %f" % reg.alpha_)
+    print("Best score using built-in LassoCV: %f" %reg.score(X.fillna(-1),y))
+    coef = pd.Series(reg.coef_, index = X.columns)
+    imp_coef = coef.sort_values()
+    size = len(X.columns)/1.6
+    plt.rcParams['figure.figsize'] = (10,size )
+    imp_coef.plot(kind = "barh",color="#3498db")
+    plt.title("Features correlations to target")
+
+
+def label_dist(df,label,y=False):
+    # Target distribution analysis
+
+    fig, ax =plt.subplots(1,2)
+    plt.figure(figsize=(3,4))
+    sns.set_style("whitegrid")
+    plt.style.use('fivethirtyeight')
+
+    #sns.set_context("paper", font_scale=1.3)       
+    sns.set_context(font_scale=1.2)                                                  
+                                               
+    splot=sns.countplot(label,data=df, ax=ax[0])
+
+    for p in splot.patches:
+        splot.annotate(format(p.get_height(), '.0f'), (p.get_x() + p.get_width() / 2., p.get_height()), ha = 'center', va = 'center', xytext = (0, 10), textcoords = 'offset points')
+    if y!= False:
+        y.value_counts().plot.pie(explode=[0,0.2],autopct='%1.2f%%',ax=ax[1])
+    else:
+        df[label].value_counts().plot.pie(explode=[0,0.2],autopct='%1.2f%%',ax=ax[1])
+    fig.show()
+
 def roc_curve_plot(y_test, predictions):
     # Roc curve visualization, binary classification including AUC calculation
 
@@ -118,7 +165,7 @@ def roc_curve_plot(y_test, predictions):
     rf_roc_auc = roc_auc_score(y_test, predictions)
     rf_fpr, rf_tpr, rf_thresholds = roc_curve(y_test, predictions)
 
-    plt.figure(figsize=(8, 6))
+    plt.figure(figsize=(9, 8))
     plt.plot(rf_fpr, rf_tpr, label="LGBM (area = %0.3f)" % rf_roc_auc)
     plt.plot([0, 1], [0, 1], "r--")
     plt.xlim([0.0, 1.0])
@@ -142,11 +189,14 @@ def target_pie(df,target):
     sns.set_context("paper", font_scale=1)                                                  
     df[target].value_counts().plot.pie(explode=[0,0.2],autopct='%1.2f%%')
 
-def cv_plot(arr_f1_weighted, arr_f1_macro, arr_f1_positive, AxisName):
+def cv_plot(arr_f1_weighted, arr_f1_macro, arr_f1_positive, AxisName, mode='full'):
     # Visualization of the CV folds, F1 macro and F1 positive class
 
     sns.set_style("whitegrid")
-    plt.figure(figsize=(13, 7))
+    if mode=='fast':
+        plt.figure(figsize=(6, 7))
+    else:
+        plt.figure(figsize=(13, 7))
     gcbest = ["#3498db", "#2ecc71"]
     sns.set_palette(gcbest)
 
@@ -175,9 +225,10 @@ def cv_plot(arr_f1_weighted, arr_f1_macro, arr_f1_positive, AxisName):
 
 def preds_distribution(y_true, y_pred, bins=100, title='Predictions Distribution', normalize=False, ax=None,
                             figsize=None, title_fontsize='large', max_y=None):
+    
     sns.set_style("whitegrid")
     if ax is None:
-        fig, ax = plt.subplots(1, 1, figsize=(10,6))
+        fig, ax = plt.subplots(1, 1, figsize=(11,6))
     
     predictions_proba=np.array(y_pred)
     y_bool=np.array(y_true)>0
@@ -193,9 +244,23 @@ def preds_distribution(y_true, y_pred, bins=100, title='Predictions Distribution
     ax.hist(y_pred_true, bins=bins, color='g', alpha=0.5, label='positive', weights=weights_true)
     ax.set_title(title, fontsize=title_fontsize)
     #_set_lim(max_y, ax.set_ylim)
+    ax.set_ylim(0,max_y)
     ax.legend(loc='best')
-
     return ax
+
+def target_shape(df,target):
+    fig, ax =plt.subplots(1,2)
+
+    plt.style.use('fivethirtyeight')
+    plt.figure(figsize=(3,4))
+    sns.set_context("paper", font_scale=1.2)                                                  
+    splot=sns.countplot(target,data=df, ax=ax[0])
+
+    for p in splot.patches:
+        splot.annotate(format(p.get_height(), '.0f'), (p.get_x() + p.get_width() / 2., p.get_height()), ha = 'center', va = 'center', xytext = (0, 10), textcoords = 'offset points')
+
+    df[target].value_counts().plot.pie(explode=[0,0.2],autopct='%1.2f%%',ax=ax[1])
+    fig.show()
 
 
 def lgbm(X_train, y_train, X_test, y_test, num, params=None):
@@ -232,7 +297,7 @@ def lgbm(X_train, y_train, X_test, y_test, num, params=None):
             # "feature_fraction" : 0.05,
         }
 
-    clf = lgb.train(params, lgb_train, num)
+    clf = lgb.train(params, lgb_train,valid_sets=[lgb_train, lgb_valid], num_boost_round=num)
 
     return clf
 
@@ -244,9 +309,11 @@ def adjusted_classes(y_scores, t):
 
 @timer
 @mem_measure
-def cv_adv(X, y, threshold, iterations, shuffle=True, params=None, mode="classification"):
-
+def cv_adv(X, y, threshold, iterations, shuffle=True, params=None, mode="classification",method="full"):
     # Cross Validation - stratified with and without shuffeling
+
+    print ("--------------------------- Running Cross-Validation - " + mode + ", mode: " + method + " ---------------------------")
+    print ("-> Starting 5-folds CV - Shuffle: " + str(shuffle) )
     arr_f1_weighted = np.array([])
     arr_f1_macro = np.array([])
     arr_f1_positive = np.array([])
@@ -262,7 +329,7 @@ def cv_adv(X, y, threshold, iterations, shuffle=True, params=None, mode="classif
         skf = KFold(n_splits=5)
     else:
         skf = StratifiedKFold(n_splits=5, random_state=2, shuffle=shuffle)
-
+    
     for train_index, test_index in tqdm(skf.split(X, y)):
         X_train, X_test = X.iloc[train_index], X.iloc[test_index]
         y_train, y_test = y.iloc[train_index], y.iloc[test_index]
@@ -281,7 +348,7 @@ def cv_adv(X, y, threshold, iterations, shuffle=True, params=None, mode="classif
             print (np.argmax(i))
             predictions_classes.append(np.argmax(i))  
         """
-
+        
         if mode=="regression":
             prediction_folds.extend(predictions)
             preds_folds.extend(preds)
@@ -301,7 +368,12 @@ def cv_adv(X, y, threshold, iterations, shuffle=True, params=None, mode="classif
             arr_f1_positive = np.append(
                 arr_f1_positive, f1_score(y_test, predictions, average="binary")
             )
-            final_clf = lgbm(X, y, X_test, y_test, iterations, params)
+
+        if method=='fast':
+            break
+
+    print ("-> Training final model on the full-set\n")
+    final_clf = lgbm(X, y, X_test, y_test, iterations, params)
 
     return (
         {'final_clf': final_clf,
@@ -414,7 +486,7 @@ def cv(X, y, threshold, iterations, shuffle=True, params=None):
             arr_f1_positive, f1_score(y_test, predictions, average="binary")
         )
 
-        final_clf = lgbm(X, y, X_test, y_test, iterations, params)
+        final_clf = lgbm(X, y, X_test, y_test, iterations, params,no_val=True)
 
     return (
         final_clf,

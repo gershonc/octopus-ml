@@ -184,8 +184,7 @@ def sampling_within_group(df, target, num_negative_instances, group_by_name, fra
 
     print("Number of groups: ", len(grouped_df))
 
-    grouped_df.target.max()
-    g_df = grouped_df.target.max().reset_index()
+    g_df = grouped_df[target].max().reset_index()
     positive = len(g_df[g_df[target] == 1])
     negative = len(g_df[g_df[target] == 0])
 
@@ -212,7 +211,7 @@ def sampling_within_group(df, target, num_negative_instances, group_by_name, fra
     # selected_negative_instances = df.sample(frac=fracture, replace=False, random_state=1)
     # selected_negative_instances = df.sample(frac=fracture, replace=False, random_state=1)
     selected_negative_instances = (
-        df[df[target] == 0].groupby("stay").sample(frac=frac, random_state=2)
+        df[df[target] == 0].groupby(group_by_name).sample(frac=frac, random_state=2)
     )
 
     sampled_df = pd.concat([positive_instances, selected_negative_instances])
@@ -233,9 +232,10 @@ def sampling_within_group(df, target, num_negative_instances, group_by_name, fra
     )
     return sampled_df
 
+
+
 def cat_features_proccessing(df):
     # detect and change tyoe of categorical features, retun a list of categorical features and modified dataframe 
-
     categorical_features=[]
     for c in df.columns:
         col_type = df[c].dtype
@@ -243,6 +243,23 @@ def cat_features_proccessing(df):
             df[c] = df[c].astype('category')
             categorical_features.append(c)
     return categorical_features, df
+
+def detect_categorical(df,num_category_max,threshold=1):
+    category_features = []
+
+    for each in df.columns:
+        if (df[each].nunique()<num_category_max) & (df[each].nunique()>2):
+            #print (df[each].nunique())
+            if df[each].nunique()/df[each].count() < threshold:
+                category_features.append(each)
+
+    return category_features
+
+def convert_to_categorical(df, categorical_features):
+    for i,each in enumerate(categorical_features):
+        if i%10==0:
+            print (i)
+        df[each] = df[each].astype('category')
 
 def anomalies(df, df_cols):
     clf = IsolationForest(max_samples=100)

@@ -7,6 +7,9 @@ from .octopus_ml import roc_curve_plot
 from .octopus_ml import confusion_matrix_plot
 from .octopus_ml import hist_target
 from .octopus_ml import target_pie
+from .octopus_ml import preds_distribution
+from .octopus_ml import target_corr
+from .octopus_ml import label_dist
 from .octopus_data import sampling_within_group
 from .octopus_data import anomalies
 from .octopus_data import correlations
@@ -16,3 +19,5 @@ from .octopus_data import sampling_by_group
 from .octopus_data import sampling
 from .octopus_data import data_leakage
 from .octopus_data import cat_features_proccessing
+from .octopus_data import convert_to_categorical
+from .octopus_data import detect_categorical
