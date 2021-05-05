@@ -21,3 +21,4 @@ from .octopus_data import data_leakage
 from .octopus_data import cat_features_proccessing
 from .octopus_data import convert_to_categorical
 from .octopus_data import detect_categorical
+from .octopus_data import compare_datasets

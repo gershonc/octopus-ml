@@ -270,3 +270,9 @@ def anomalies(df, df_cols):
     return df[y_pred_test == 1][df_cols].head(10)
 
 
+def compare_datasets(df1, df2):
+    print (dataset1 shape:+str(df1.shape))
+    print (dataset2 shape:+str(df2.shape))
+
+
+
