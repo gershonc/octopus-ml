@@ -137,7 +137,7 @@ def target_corr(X,y,df_cols):
     plt.title("Features correlations to target")
 
 
-def label_dist(df,label,y=False):
+def label_dist(df,label,y=None):
     # Target distribution analysis
 
     fig, ax =plt.subplots(1,2)
@@ -148,13 +148,18 @@ def label_dist(df,label,y=False):
     #sns.set_context("paper", font_scale=1.3)       
     sns.set_context(font_scale=1.2)                                                  
                                                
-    splot=sns.countplot(label,data=df, ax=ax[0])
+    if y is not None:
+    
+        splot=sns.countplot('label',data=y.to_frame('label').reset_index(), ax=ax[0])
 
-    for p in splot.patches:
-        splot.annotate(format(p.get_height(), '.0f'), (p.get_x() + p.get_width() / 2., p.get_height()), ha = 'center', va = 'center', xytext = (0, 10), textcoords = 'offset points')
-    if y!= False:
+        for p in splot.patches:
+            splot.annotate(format(p.get_height(), '.0f'), (p.get_x() + p.get_width() / 2., p.get_height()), ha = 'center', va = 'center', xytext = (0, 10), textcoords = 'offset points')
         y.value_counts().plot.pie(explode=[0,0.2],autopct='%1.2f%%',ax=ax[1])
     else:
+        splot=sns.countplot(label,data=df, ax=ax[0])
+        for p in splot.patches:
+            splot.annotate(format(p.get_height(), '.0f'), (p.get_x() + p.get_width() / 2., p.get_height()), ha = 'center', va = 'center', xytext = (0, 10), textcoords = 'offset points')
+    
         df[label].value_counts().plot.pie(explode=[0,0.2],autopct='%1.2f%%',ax=ax[1])
     fig.show()
 
