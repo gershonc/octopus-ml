@@ -33,8 +33,6 @@ import lightgbm as lgb
 import tracemalloc
 
 
-
-
 def correlations(df, cols):
     sns.set(style="white")
     corr = df[cols].corr()
@@ -54,9 +52,13 @@ def correlations(df, cols):
     )
 
 
+def diff_list(li1, li2):
+    return list(list(set(li1) - set(li2)) + list(set(li2) - set(li1)))
+
+
 def recieve_fps(df, index, y_folds, preds_folds, threshold=0.5, top=10):
-    preds_labels = pd.DataFrame(index, columns=['index'])
-    preds_labels['label'] = y_folds
+    preds_labels = pd.DataFrame(index, columns=["index"])
+    preds_labels["label"] = y_folds
     preds_labels["preds_proba"] = preds_folds
     preds_labels["preds_class"] = preds_labels["preds_proba"].apply(
         lambda x: 1 if x > threshold else 0
@@ -70,10 +72,10 @@ def recieve_fps(df, index, y_folds, preds_folds, threshold=0.5, top=10):
     )
     return preds_labels_sorted.head(top).reset_index(drop=True)
 
-    
+
 def recieve_fns(df, index, y_folds, preds_folds, threshold=0.5, top=10):
-    preds_labels = pd.DataFrame(index, columns=['index'])
-    preds_labels['label'] = y_folds
+    preds_labels = pd.DataFrame(index, columns=["index"])
+    preds_labels["label"] = y_folds
     preds_labels["preds_proba"] = preds_folds
     preds_labels["preds_class"] = preds_labels["preds_proba"].apply(
         lambda x: 1 if x > threshold else 0
@@ -82,11 +84,12 @@ def recieve_fns(df, index, y_folds, preds_folds, threshold=0.5, top=10):
         print("recieved threshold of: ", threshold, "\n")
     else:
         print("calculating using threshold of: ", threshold)
-        
+
     preds_labels_sorted = preds_labels[preds_labels["label"] == 1].sort_values(
         by="preds_proba", ascending=True
     )
     return preds_labels_sorted.head(top).reset_index(drop=True)
+
 
 @timer
 @mem_measure
@@ -233,33 +236,35 @@ def sampling_within_group(df, target, num_negative_instances, group_by_name, fra
     return sampled_df
 
 
-
 def cat_features_proccessing(df):
-    # detect and change tyoe of categorical features, retun a list of categorical features and modified dataframe 
-    categorical_features=[]
+    # detect and change tyoe of categorical features, retun a list of categorical features and modified dataframe
+    categorical_features = []
     for c in df.columns:
         col_type = df[c].dtype
-        if col_type == 'object' or col_type.name == 'category':
-            df[c] = df[c].astype('category')
+        if col_type == "object" or col_type.name == "category":
+            df[c] = df[c].astype("category")
             categorical_features.append(c)
     return categorical_features, df
 
-def detect_categorical(df,num_category_max,threshold=1):
+
+def detect_categorical(df, num_category_max, threshold=1):
     category_features = []
 
     for each in df.columns:
-        if (df[each].nunique()<num_category_max) & (df[each].nunique()>2):
-            #print (df[each].nunique())
-            if df[each].nunique()/df[each].count() < threshold:
+        if (df[each].nunique() < num_category_max) & (df[each].nunique() > 2):
+            # print (df[each].nunique())
+            if df[each].nunique() / df[each].count() < threshold:
                 category_features.append(each)
 
     return category_features
 
+
 def convert_to_categorical(df, categorical_features):
-    for i,each in enumerate(categorical_features):
-        if i%10==0:
-            print (i)
-        df[each] = df[each].astype('category')
+    for i, each in enumerate(categorical_features):
+        if i % 10 == 0:
+            print(i)
+        df[each] = df[each].astype("category")
+
 
 def anomalies(df, df_cols):
     clf = IsolationForest(max_samples=100)
@@ -268,5 +273,3 @@ def anomalies(df, df_cols):
     # y_pred_dev = clf.predict(X_dev)
     y_pred_test = clf.predict(df[df_cols].fillna(0))
     return df[y_pred_test == 1][df_cols].head(10)
-
-

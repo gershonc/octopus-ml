@@ -42,7 +42,10 @@ warnings.simplefilter(action="ignore", category=FutureWarning)
 
 # ML visualizations
 
-def plot_imp(clf, X, title, model="lgbm", num=30, importaince_type="gain", save_path=None):
+
+def plot_imp(
+    clf, X, title, model="lgbm", num=30, importaince_type="gain", save_path=None
+):
     # Feature importance plot supporting LGBM, RN and Catboost, return the list of features importance sorted by their contribution
     sns.set_style("whitegrid")
 
@@ -72,10 +75,11 @@ def plot_imp(clf, X, title, model="lgbm", num=30, importaince_type="gain", save_
     )
     plt.title(title)
     plt.tight_layout()
-    plt.show()
-
+    
     if save_path:
-        plt.savefig(save_path)
+        plt.savefig(save_path, dpi=100)
+
+    plt.show()
 
     return feature_imp
 
@@ -111,17 +115,19 @@ def confusion_matrix_plot(y_test, y_predict, save_path=None):
     plt.title("Confusion Matrix")
     plt.ylabel("True Class")
     plt.xlabel("Predicted Class")
-    plt.show()
 
     if save_path:
-        plt.savefig(save_path)
+        plt.savefig(save_path, dpi=100)
+
+    plt.show()
+
 
 
 def target_corr(X, y, df_cols, save_path=None):
     # Feature correlations to the target
 
     # catCols = X.select_dtypes(object").columns
-    catCols = X[df_cols].select_dtypes(include=['category', object]).columns
+    catCols = X[df_cols].select_dtypes(include=["category", object]).columns
 
     # print (catCols)
     X = X[df_cols].drop(columns=catCols)
@@ -136,7 +142,7 @@ def target_corr(X, y, df_cols, save_path=None):
     coef = pd.Series(reg.coef_, index=X.columns)
     imp_coef = coef.sort_values()
     size = len(X.columns) / 1.6
-    plt.rcParams['figure.figsize'] = (10, size)
+    plt.rcParams["figure.figsize"] = (10, size)
     imp_coef.plot(kind="barh", color="#3498db")
     plt.title("Features correlations to target")
 
@@ -150,40 +156,51 @@ def label_dist(df, label, y=None):
     fig, ax = plt.subplots(1, 2)
     plt.figure(figsize=(3, 4))
     sns.set_style("whitegrid")
-    plt.style.use('fivethirtyeight')
+    plt.style.use("fivethirtyeight")
 
     # sns.set_context("paper", font_scale=1.3)
     sns.set_context(font_scale=1.2)
 
     if y is not None:
 
-        splot = sns.countplot('label', data=y.to_frame('label').reset_index(), ax=ax[0])
+        splot = sns.countplot("label", data=y.to_frame("label").reset_index(), ax=ax[0])
 
         for p in splot.patches:
-            splot.annotate(format(p.get_height(), '.0f'),
-                           (p.get_x() + p.get_width() / 2., p.get_height()), ha='center',
-                           va='center', xytext=(0, 10), textcoords='offset points')
-        y.value_counts().plot.pie(explode=[0, 0.2], autopct='%1.2f%%', ax=ax[1])
+            splot.annotate(
+                format(p.get_height(), ".0f"),
+                (p.get_x() + p.get_width() / 2.0, p.get_height()),
+                ha="center",
+                va="center",
+                xytext=(0, 10),
+                textcoords="offset points",
+            )
+        y.value_counts().plot.pie(explode=[0, 0.2], autopct="%1.2f%%", ax=ax[1])
     else:
         splot = sns.countplot(label, data=df, ax=ax[0])
         for p in splot.patches:
-            splot.annotate(format(p.get_height(), '.0f'),
-                           (p.get_x() + p.get_width() / 2., p.get_height()), ha='center',
-                           va='center', xytext=(0, 10), textcoords='offset points')
+            splot.annotate(
+                format(p.get_height(), ".0f"),
+                (p.get_x() + p.get_width() / 2.0, p.get_height()),
+                ha="center",
+                va="center",
+                xytext=(0, 10),
+                textcoords="offset points",
+            )
 
-        df[label].value_counts().plot.pie(explode=[0, 0.2], autopct='%1.2f%%', ax=ax[1])
+        df[label].value_counts().plot.pie(explode=[0, 0.2], autopct="%1.2f%%", ax=ax[1])
     fig.show()
 
 
 def roc_curve_plot(y_test, predictions, save_path=None):
     # Roc curve visualization, binary classification including AUC calculation
-
+    
+    plt.style.use('classic')
     sns.set_style("whitegrid")
     rf_roc_auc = roc_auc_score(y_test, predictions)
     rf_fpr, rf_tpr, rf_thresholds = roc_curve(y_test, predictions)
 
-    plt.figure(figsize=(9, 8))
-    plt.plot(rf_fpr, rf_tpr, label="LGBM (area = %0.3f)" % rf_roc_auc)
+    plt.figure(figsize=(10, 8))
+    plt.plot(rf_fpr, rf_tpr, label="AUC = %0.3f" % rf_roc_auc, color="#3498db")
     plt.plot([0, 1], [0, 1], "r--")
     plt.xlim([0.0, 1.0])
     plt.ylim([0.0, 1.05])
@@ -192,32 +209,48 @@ def roc_curve_plot(y_test, predictions, save_path=None):
     plt.ylabel("True Positive Rate", fontsize=14)
     plt.title("Receiver operating characteristic", fontsize=17)
     plt.legend(loc="lower right")
+    if save_path:
+        plt.savefig(save_path, dpi=100)
+
     plt.show()
 
-    if save_path:
-        plt.savefig(save_path)
 
 
 def hist_target(df, feature, target):
     # histogram with an hue of the target class
-    sns.displot(data=df, bins=25, kind='hist', x=feature, hue=target, multiple='stack', height=3,
-                aspect=1.8)
+    sns.displot(
+        data=df,
+        bins=25,
+        kind="hist",
+        x=feature,
+        hue=target,
+        multiple="stack",
+        height=3,
+        aspect=1.8,
+    )
 
 
 def target_pie(df, target):
-    # pie chart of the target class distribution 
+    # pie chart of the target class distribution
 
-    plt.style.use('fivethirtyeight')
+    plt.style.use("fivethirtyeight")
     plt.figure(figsize=(4, 3))
     sns.set_context("paper", font_scale=1)
-    df[target].value_counts().plot.pie(explode=[0, 0.2], autopct='%1.2f%%')
+    df[target].value_counts().plot.pie(explode=[0, 0.2], autopct="%1.2f%%")
 
 
-def cv_plot(arr_f1_weighted, arr_f1_macro, arr_f1_positive, AxisName, mode='full', save_path=None):
+def cv_plot(
+    arr_f1_weighted,
+    arr_f1_macro,
+    arr_f1_positive,
+    AxisName,
+    mode="full",
+    save_path=None,
+):
     # Visualization of the CV folds, F1 macro and F1 positive class
 
     sns.set_style("whitegrid")
-    if mode == 'fast':
+    if mode == "fast":
         plt.figure(figsize=(6, 7))
     else:
         plt.figure(figsize=(13, 7))
@@ -243,7 +276,7 @@ def cv_plot(arr_f1_weighted, arr_f1_macro, arr_f1_positive, AxisName, mode='full
     plt.xticks(np.arange(len(arr_f1_weighted)), fontsize=14)
     plt.ylabel("F1", fontsize=14)
     plt.xlabel("Folds", fontsize=14)
-    plt.title("%s, 5-Folds Cross Validation" % AxisName[0: len(AxisName)], fontsize=17)
+    plt.title("%s, 5-Folds Cross Validation" % AxisName[0 : len(AxisName)], fontsize=17)
     plt.legend(["F1 macro", "F1 positive"], loc="upper right", fontsize=14)
     plt.grid(True)
 
@@ -251,8 +284,17 @@ def cv_plot(arr_f1_weighted, arr_f1_macro, arr_f1_positive, AxisName, mode='full
         plt.savefig(save_path)
 
 
-def preds_distribution(y_true, y_pred, bins=100, title='Predictions Distribution', normalize=False,
-                       ax=None, title_fontsize='large', max_y=None, save_path=None):
+def preds_distribution(
+    y_true,
+    y_pred,
+    bins=100,
+    title="Predictions Distribution",
+    normalize=False,
+    ax=None,
+    title_fontsize="large",
+    max_y=None,
+    save_path=None,
+):
     sns.set_style("whitegrid")
     if ax is None:
         fig, ax = plt.subplots(1, 1, figsize=(11, 6))
@@ -264,18 +306,35 @@ def preds_distribution(y_true, y_pred, bins=100, title='Predictions Distribution
 
     # print (y_pred_true)
     # matplotlib normalize is using the bin width, just calculate it by our own...
-    weights_false = np.ones(len(y_pred_false)) / len(y_pred_false) if normalize else None
+    weights_false = (
+        np.ones(len(y_pred_false)) / len(y_pred_false) if normalize else None
+    )
     weights_true = np.ones(len(y_pred_true)) / len(y_pred_true) if normalize else None
 
-    ax.hist(y_pred_false, bins=bins, color='r', alpha=0.5, label='negative', weights=weights_false)
-    ax.hist(y_pred_true, bins=bins, color='g', alpha=0.5, label='positive', weights=weights_true)
+    ax.hist(
+        y_pred_false,
+        bins=bins,
+        color="r",
+        alpha=0.5,
+        label="negative",
+        weights=weights_false,
+    )
+    ax.hist(
+        y_pred_true,
+        bins=bins,
+        color="g",
+        alpha=0.5,
+        label="positive",
+        weights=weights_true,
+    )
     ax.set_title(title, fontsize=title_fontsize)
     # _set_lim(max_y, ax.set_ylim)
     ax.set_ylim(0, max_y)
-    ax.legend(loc='best')
+    ax.legend(loc="best")
 
     if save_path:
-        plt.savefig(save_path)
+        plt.savefig(save_path, dpi=100)
+
     plt.show()
 
     return ax
@@ -284,17 +343,22 @@ def preds_distribution(y_true, y_pred, bins=100, title='Predictions Distribution
 def target_shape(df, target):
     fig, ax = plt.subplots(1, 2)
 
-    plt.style.use('fivethirtyeight')
+    plt.style.use("fivethirtyeight")
     plt.figure(figsize=(3, 4))
     sns.set_context("paper", font_scale=1.2)
     splot = sns.countplot(target, data=df, ax=ax[0])
 
     for p in splot.patches:
-        splot.annotate(format(p.get_height(), '.0f'),
-                       (p.get_x() + p.get_width() / 2., p.get_height()), ha='center', va='center',
-                       xytext=(0, 10), textcoords='offset points')
+        splot.annotate(
+            format(p.get_height(), ".0f"),
+            (p.get_x() + p.get_width() / 2.0, p.get_height()),
+            ha="center",
+            va="center",
+            xytext=(0, 10),
+            textcoords="offset points",
+        )
 
-    df[target].value_counts().plot.pie(explode=[0, 0.2], autopct='%1.2f%%', ax=ax[1])
+    df[target].value_counts().plot.pie(explode=[0, 0.2], autopct="%1.2f%%", ax=ax[1])
     fig.show()
 
 
@@ -332,7 +396,9 @@ def lgbm(X_train, y_train, X_test, y_test, num, params=None):
             # "feature_fraction" : 0.05,
         }
 
-    clf = lgb.train(params, lgb_train, valid_sets=[lgb_train, lgb_valid], num_boost_round=num)
+    clf = lgb.train(
+        params, lgb_train, valid_sets=[lgb_train, lgb_valid], num_boost_round=num
+    )
 
     return clf
 
@@ -344,12 +410,25 @@ def adjusted_classes(y_scores, t):
 
 @timer
 @mem_measure
-def cv_adv(X, y, threshold, iterations, shuffle=True, params=None, mode="classification",
-           method="full"):
+def cv_adv(
+    X,
+    y,
+    threshold,
+    iterations,
+    shuffle=True,
+    params=None,
+    mode="classification",
+    method="full",
+):
     # Cross Validation - stratified with and without shuffeling
 
     print(
-        "--------------------------- Running Cross-Validation - " + mode + ", mode: " + method + " ---------------------------")
+        "--------------------------- Running Cross-Validation - "
+        + mode
+        + ", mode: "
+        + method
+        + " ---------------------------"
+    )
     print("-> Starting 5-folds CV - Shuffle: " + str(shuffle))
     arr_f1_weighted = np.array([])
     arr_f1_macro = np.array([])
@@ -406,23 +485,23 @@ def cv_adv(X, y, threshold, iterations, shuffle=True, params=None, mode="classif
                 arr_f1_positive, f1_score(y_test, predictions, average="binary")
             )
 
-        if method == 'fast':
+        if method == "fast":
             break
 
     print("-> Training final model on the full-set\n")
     final_clf = lgbm(X, y, X_test, y_test, iterations, params)
 
-    return (
-        {'final_clf': final_clf,
-         'f1_weighted': arr_f1_weighted,
-         'f1_macro': arr_f1_macro,
-         'f1_positive': arr_f1_positive,
-         'predictions_folds': prediction_folds,
-         'predictions_proba': preds_folds,
-         'y': y_folds,
-         'index': index_column,
-         'stacked_models': stacked_models}
-    )
+    return {
+        "final_clf": final_clf,
+        "f1_weighted": arr_f1_weighted,
+        "f1_macro": arr_f1_macro,
+        "f1_positive": arr_f1_positive,
+        "predictions_folds": prediction_folds,
+        "predictions_proba": preds_folds,
+        "y": y_folds,
+        "index": index_column,
+        "stacked_models": stacked_models,
+    }
 
 
 def cv_grouped(X, y, threshold, iterations, group_name, shuffle=True):
