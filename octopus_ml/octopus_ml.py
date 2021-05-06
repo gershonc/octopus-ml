@@ -199,7 +199,7 @@ def roc_curve_plot(y_test, predictions, save_path=None):
     rf_roc_auc = roc_auc_score(y_test, predictions)
     rf_fpr, rf_tpr, rf_thresholds = roc_curve(y_test, predictions)
 
-    plt.figure(figsize=(10, 8))
+    plt.figure(figsize=(9, 8))
     plt.plot(rf_fpr, rf_tpr, label="AUC = %0.3f" % rf_roc_auc, color="#3498db")
     plt.plot([0, 1], [0, 1], "r--")
     plt.xlim([0.0, 1.0])
