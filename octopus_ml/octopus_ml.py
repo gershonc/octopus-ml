@@ -42,7 +42,6 @@ warnings.simplefilter(action="ignore", category=FutureWarning)
 
 # ML visualizations
 
-
 def plot_imp(
     clf, X, title, model="lgbm", num=30, importaince_type="gain", save_path=None
 ):
@@ -368,6 +367,13 @@ def lgbm(X_train, y_train, X_test, y_test, num, params=None):
     categorical_features = []
     for c in X_train.columns:
         col_type = X_train[c].dtype
+        if col_type == "object" or col_type.name == "category":
+            # an option in case the data(pandas dataframe) isn't passed with the categorical column type
+            # X[c] = X[c].astype('category')
+            categorical_features.append(c)
+
+    for c in X_test.columns:
+        col_type = X_test[c].dtype
         if col_type == "object" or col_type.name == "category":
             # an option in case the data(pandas dataframe) isn't passed with the categorical column type
             # X[c] = X[c].astype('category')
