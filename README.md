@@ -32,5 +32,7 @@ from octopus_ml import plot_imp, adjusted_classes, cv, cv_plot, roc_curve_plot, 
 
 ```
 <br><center><img src="https://github.com/gershonc/octopus-ml/blob/main/images/oc_plot_cv.png" /></center>
-<br><center><img src="/images/confusion_matirx.PNG" /></center>
-<br><center><img src="https://github.com/gershonc/octopus-ml/blob/main/images/oc_plot_confusion_matrix.png></center>
+<br><center><img src="https://github.com/gershonc/octopus-ml/blob/main/images/oc_plot_roc.png" /></center>
+<br><center><img src="https://github.com/gershonc/octopus-ml/blob/main/images/oc_plot_prediction_distribution.png" /></center>
+<br><center><img src="https://github.com/gershonc/octopus-ml/blob/main/images/oc_plot_confusion_matrix.png" /></center>
+<br><center><img src="https://github.com/gershonc/octopus-ml/blob/main/images/oc_plot_feature_imp.png" /></center>
