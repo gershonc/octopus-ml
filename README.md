@@ -31,8 +31,8 @@ The module contains ML and Data related methods:
 from octopus_ml import plot_imp, adjusted_classes, cv, cv_plot, roc_curve_plot, ...
 
 ```
-<br><center><img src="https://github.com/gershonc/octopus-ml/blob/main/images/oc_plot_cv.png" /></center>
-<br><center><img src="https://github.com/gershonc/octopus-ml/blob/main/images/oc_plot_roc.png" width="650"/></center>
+<br><center><img src="https://github.com/gershonc/octopus-ml/blob/main/images/oc_plot_cv.png" width="750"/></center>
+<br><center><img src="https://github.com/gershonc/octopus-ml/blob/main/images/oc_plot_roc.png" width="600"/></center>
 <br><center><img src="https://github.com/gershonc/octopus-ml/blob/main/images/oc_plot_prediction_distribution.png" width="700" /></center>
 <br><center><img src="https://github.com/gershonc/octopus-ml/blob/main/images/oc_plot_confusion_matrix.png" width="650" /></center>
 <br><center><img src="https://github.com/gershonc/octopus-ml/blob/main/images/oc_plot_feature_imp.png" width="800"/></center>
