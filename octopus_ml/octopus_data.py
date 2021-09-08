@@ -38,7 +38,7 @@ def correlations(df, cols):
     corr = df[cols].corr()
     mask = np.zeros_like(corr, dtype=np.bool)
     mask[np.triu_indices_from(mask)] = True
-    f, ax = plt.subplots(figsize=(11, 9))
+    f, ax = plt.subplots(figsize=(8, 7.5))
     cmap = sns.diverging_palette(220, 10, as_cmap=True)
     sns.heatmap(
         corr,

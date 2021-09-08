@@ -24,6 +24,7 @@ from sklearn.metrics import f1_score
 from sklearn.model_selection import StratifiedKFold
 from .misc import mem_measure, timer
 from sklearn.linear_model import LassoCV
+from IPython.display import set_matplotlib_formats
 
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -46,7 +47,12 @@ def plot_imp(
     clf, X, title, model="lgbm", num=30, importaince_type="gain", save_path=None
 ):
     # Feature importance plot supporting LGBM, RN and Catboost, return the list of features importance sorted by their contribution
-    sns.set_style("whitegrid")
+    #sns.set_style("whitegrid")
+    gcbest = ["#3498db", "#2ecc71"]
+    sns.set_context("paper", font_scale=1)
+    sns.set_palette(gcbest)
+
+ 
 
     if model == "catboost":
         feature_imp = pd.DataFrame(
@@ -64,8 +70,8 @@ def plot_imp(
             {"Value": clf.feature_importance(), "Feature": X.columns}
         )
 
-    plt.figure(figsize=(16, num / 1.7))
-    sns.set(font_scale=1.1)
+    plt.figure(figsize=(11, num / 2.2))
+    sns.set(font_scale=0.85)
     sns.barplot(
         color="#3498db",
         x="Value",
@@ -85,13 +91,14 @@ def plot_imp(
 
 def confusion_matrix_plot(y_test, y_predict, save_path=None):
     # Confusion Matrix plot, binary classification including both normalized and absolute values plots
+    set_matplotlib_formats('svg')
 
     plt.figure()
     cm = confusion_matrix(y_test, y_predict)
     cmn = cm.astype("float") / cm.sum(axis=1)[:, np.newaxis] * 100
-    sns.set(font_scale=1.1)
+    sns.set(font_scale=0.85)
     labels = ["0", "1"]
-    plt.figure(figsize=(6.5, 5.5))
+    plt.figure(figsize=(6, 5))
     # sns.heatmap(cm, xticklabels = labels, yticklabels = labels, annot = True, fmt='d', cmap="Blues", vmin = 0.2);
     sns.heatmap(
         cmn, xticklabels=labels, yticklabels=labels, annot=True, fmt=".2f", cmap="Blues"
@@ -104,9 +111,9 @@ def confusion_matrix_plot(y_test, y_predict, save_path=None):
     plt.figure()
     cm = confusion_matrix(y_test, y_predict)
     cmn = cm.astype("int")
-    sns.set(font_scale=1.1)
+    sns.set(font_scale=0.85)
     labels = ["0", "1"]
-    plt.figure(figsize=(6.5, 5.5))
+    plt.figure(figsize=(6, 5))
     # sns.heatmap(cm, xticklabels = labels, yticklabels = labels, annot = True, fmt='d', cmap="Blues", vmin = 0.2);
     sns.heatmap(
         cmn, xticklabels=labels, yticklabels=labels, annot=True, fmt="d", cmap="Blues"
@@ -151,17 +158,19 @@ def target_corr(X, y, df_cols, save_path=None):
 
 def label_dist(df, label, y=None):
     # Target distribution analysis
+    gcbest = ["#3498db", "#2ecc71"]
+    sns.set_context("paper", font_scale=1)
+    sns.set_palette(gcbest)
 
     fig, ax = plt.subplots(1, 2)
-    plt.figure(figsize=(3, 4))
-    sns.set_style("whitegrid")
-    plt.style.use("fivethirtyeight")
-
-    # sns.set_context("paper", font_scale=1.3)
-    sns.set_context(font_scale=1.2)
-
+    plt.figure(figsize=(2, 3))
+    #sns.set_style("whitegrid")
+    set_matplotlib_formats('svg')
+    #plt.style.use("seaborn-notebook")
+    #sns.set_context("paper", font_scale=1.3)
+    sns.set_context(font_scale=1)
+    
     if y is not None:
-
         splot = sns.countplot("label", data=y.to_frame("label").reset_index(), ax=ax[0])
 
         for p in splot.patches:
@@ -192,21 +201,25 @@ def label_dist(df, label, y=None):
 
 def roc_curve_plot(y_test, predictions, save_path=None):
     # Roc curve visualization, binary classification including AUC calculation
-    
-    plt.style.use('classic')
+    set_matplotlib_formats('svg')
+    gcbest = ["#3498db", "#2ecc71"]
+    sns.set_palette(gcbest)
+    sns.set_context("paper", font_scale=1)
+
+    #plt.style.use('classic')
     sns.set_style("whitegrid")
     rf_roc_auc = roc_auc_score(y_test, predictions)
     rf_fpr, rf_tpr, rf_thresholds = roc_curve(y_test, predictions)
 
-    plt.figure(figsize=(9, 8))
+    plt.figure(figsize=(6, 5.5))
     plt.plot(rf_fpr, rf_tpr, label="AUC = %0.3f" % rf_roc_auc, color="#3498db")
     plt.plot([0, 1], [0, 1], "r--")
     plt.xlim([0.0, 1.0])
     plt.ylim([0.0, 1.05])
 
-    plt.xlabel("False Positive Rate", fontsize=14)
-    plt.ylabel("True Positive Rate", fontsize=14)
-    plt.title("Receiver operating characteristic", fontsize=17)
+    plt.xlabel("False Positive Rate", fontsize=11)
+    plt.ylabel("True Positive Rate", fontsize=11)
+    plt.title("Receiver operating characteristic", fontsize=12)
     plt.legend(loc="lower right")
     if save_path:
         plt.savefig(save_path, dpi=100)
@@ -217,6 +230,11 @@ def roc_curve_plot(y_test, predictions, save_path=None):
 
 def hist_target(df, feature, target):
     # histogram with an hue of the target class
+    set_matplotlib_formats('svg')
+    gcbest = ["#3498db", "#2ecc71"]
+    sns.set_context("paper", font_scale=1)
+    sns.set_palette(gcbest)
+
     sns.displot(
         data=df,
         bins=25,
@@ -224,17 +242,20 @@ def hist_target(df, feature, target):
         x=feature,
         hue=target,
         multiple="stack",
-        height=3,
-        aspect=1.8,
+        height=3.2,
+        aspect=1.6,
     )
 
 
 def target_pie(df, target):
     # pie chart of the target class distribution
+    sns.set_style("whitegrid")
+    gcbest = ["#3498db", "#2ecc71"]
+    sns.set_palette(gcbest)
 
-    plt.style.use("fivethirtyeight")
+    #plt.style.use("fivethirtyeight")
     plt.figure(figsize=(4, 3))
-    sns.set_context("paper", font_scale=1)
+    #sns.set_context("paper", font_scale=1)
     df[target].value_counts().plot.pie(explode=[0, 0.2], autopct="%1.2f%%")
 
 
@@ -247,15 +268,20 @@ def cv_plot(
     save_path=None,
 ):
     # Visualization of the CV folds, F1 macro and F1 positive class
-
-    sns.set_style("whitegrid")
-    if mode == "fast":
-        plt.figure(figsize=(6, 7))
-    else:
-        plt.figure(figsize=(13, 7))
+    set_matplotlib_formats('svg')
+    sns.set_context(font_scale=1)
     gcbest = ["#3498db", "#2ecc71"]
     sns.set_palette(gcbest)
 
+    #plt.style.use("fivethirtyeight")
+    #sns.set_context("paper", font_scale=1)
+    sns.set_style("whitegrid")
+
+    if mode == "fast":
+        plt.figure(figsize=(5, 6))
+    else:
+        plt.figure(figsize=(10,5.58))
+           
     index = np.arange(len(arr_f1_weighted))
     bar_width = 0.30
     opacity = 0.8
@@ -272,12 +298,15 @@ def cv_plot(
         label="F1 Positive",
     )
 
-    plt.xticks(np.arange(len(arr_f1_weighted)), fontsize=14)
-    plt.ylabel("F1", fontsize=14)
-    plt.xlabel("Folds", fontsize=14)
-    plt.title("%s, 5-Folds Cross Validation" % AxisName[0 : len(AxisName)], fontsize=17)
-    plt.legend(["F1 macro", "F1 positive"], loc="upper right", fontsize=14)
+    plt.xticks(np.arange(len(arr_f1_weighted)), fontsize=10)
+    #plt.yticks([0,0.2,0.4,0.6,0.8,1],fontsize=13)
+    plt.yticks(fontsize=10)
+    plt.ylabel("F1", fontsize=10)
+    plt.xlabel("Folds", fontsize=10)
+    plt.title("%s, 5-Folds Cross Validation" % AxisName[0 : len(AxisName)], fontsize=13)
+    plt.legend(["F1 macro", "F1 positive"], loc="upper right", fontsize=10)
     plt.grid(True)
+    
 
     if save_path:
         plt.savefig(save_path)
@@ -290,13 +319,14 @@ def preds_distribution(
     title="Predictions Distribution",
     normalize=False,
     ax=None,
-    title_fontsize="large",
+    title_fontsize="medium",
     max_y=None,
     save_path=None,
-):
+):  
+    set_matplotlib_formats('svg')
     sns.set_style("whitegrid")
     if ax is None:
-        fig, ax = plt.subplots(1, 1, figsize=(11, 6))
+        fig, ax = plt.subplots(1, 1, figsize=(9, 4.8))
 
     predictions_proba = np.array(y_pred)
     y_bool = np.array(y_true) > 0
@@ -341,9 +371,10 @@ def preds_distribution(
 
 def target_shape(df, target):
     fig, ax = plt.subplots(1, 2)
+    set_matplotlib_formats('svg')
 
     plt.style.use("fivethirtyeight")
-    plt.figure(figsize=(3, 4))
+    plt.figure(figsize=(2.5, 3.5))
     sns.set_context("paper", font_scale=1.2)
     splot = sns.countplot(target, data=df, ax=ax[0])
 
@@ -450,8 +481,11 @@ def cv_adv(
     if mode == "regression":
         skf = KFold(n_splits=5)
     else:
-        skf = StratifiedKFold(n_splits=5, random_state=2, shuffle=shuffle)
-
+        if shuffle == False:
+            skf = StratifiedKFold(n_splits=5,  shuffle=shuffle)
+        else:
+            skf = StratifiedKFold(n_splits=5, random_state=2, shuffle=shuffle)
+            
     for train_index, test_index in tqdm(skf.split(X, y)):
         X_train, X_test = X.iloc[train_index], X.iloc[test_index]
         y_train, y_test = y.iloc[train_index], y.iloc[test_index]
