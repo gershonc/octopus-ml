@@ -6,13 +6,17 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
 [![Binder](https://mybinder.org/badge.svg)](https://hub.gke2.mybinder.org/user/gershonc-octopus-ml-k5of97xu/tree)
 [![Downloads](https://pepy.tech/badge/octopus-ml)](https://pepy.tech/project/octopus-ml)
-[![Colab Demo](https://colab.research.google.com/drive/1T1T15AZe0w7Zcld_09jxg-Yhq2pBefVZ?usp=sharing)
+[![Colab Demo](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1T1T15AZe0w7Zcld_09jxg-Yhq2pBefVZ?usp=sharing)
+
+
 <!-- 
 [![Code Coverage](https://codecov.io/gh/pandas-profiling/octopus-ml/branch/master/graph/badge.svg?token=gMptB4YUnF)](https://codecov.io/gh/octopus/octopus)
 -->
 Set of handy ML and data tools - from data exploration, visualization, pre-processing, hyper parameter tuning, modeling and all the way to final Ml model evaluation 
 <br><center><img src="https://raw.githubusercontent.com/gershonc/octopus-ml/main/images/octopus_know_your_data.png" width="540" height="460" /></center>
 
+Check out an octopus-ml demo notebook on colab <a href="https://colab.research.google.com/drive/1T1T15AZe0w7Zcld_09jxg-Yhq2pBefVZ?usp=sharing"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="google colab logo"></a>
+ 
 ## Installation
 The module can be easily installed with pip:
 
