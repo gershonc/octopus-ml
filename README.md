@@ -15,7 +15,7 @@
 Set of handy ML and data tools - from data exploration, visualization, pre-processing, hyper parameter tuning, modeling and all the way to final Ml model evaluation 
 <br><center><img src="https://raw.githubusercontent.com/gershonc/octopus-ml/main/images/octopus_know_your_data.png" width="540" height="460" /></center>
 
-Check out an octopus-ml demo notebook on colab <a href="https://colab.research.google.com/drive/1T1T15AZe0w7Zcld_09jxg-Yhq2pBefVZ?usp=sharing"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="google colab logo"></a>
+Check out an octopus-ml demo notebook on Colab - <a href="https://colab.research.google.com/drive/1T1T15AZe0w7Zcld_09jxg-Yhq2pBefVZ?usp=sharing"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="google colab logo"></a>
  
 ## Installation
 The module can be easily installed with pip:
