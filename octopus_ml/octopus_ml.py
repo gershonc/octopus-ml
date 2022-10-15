@@ -228,23 +228,33 @@ def roc_curve_plot(y_test, predictions, save_path=None):
 
 
 
-def hist_target(df, feature, target):
+def hist_target(df, feature, target, fill=False):
     # histogram with an hue of the target class
     set_matplotlib_formats('svg')
     gcbest = ["#3498db", "#2ecc71"]
     sns.set_context("paper", font_scale=1)
     sns.set_palette(gcbest)
 
-    sns.displot(
-        data=df,
-        bins=25,
-        kind="hist",
-        x=feature,
-        hue=target,
-        multiple="stack",
-        height=3.2,
-        aspect=1.6,
-    )
+    if fill==True:
+        sns.histplot(
+            data=df, 
+            x=feature, 
+            hue=target, 
+            stat="probability", 
+            multiple="fill", 
+            shrink=.7
+            )
+    else:
+        sns.displot(
+            data=df,
+            bins=25,
+            kind="hist",
+            x=feature,
+            hue=target,
+            multiple="stack",
+            height=3.2,
+            aspect=1.6,
+        )
 
 
 def target_pie(df, target):
