@@ -12,7 +12,7 @@
 <!-- 
 [![Code Coverage](https://codecov.io/gh/pandas-profiling/octopus-ml/branch/master/graph/badge.svg?token=gMptB4YUnF)](https://codecov.io/gh/octopus/octopus)
 -->
-Set of handy ML and data tools - from data exploration, visualization, pre-processing, hyper parameter tuning, modeling and all the way to final ML model evaluation 
+Set of handy ML and data tools - starting from data exploration, visualization, pre-processing, hyper parameter tuning, modeling and all the way to final ML model evaluation 
 <br><center><img src="https://raw.githubusercontent.com/gershonc/octopus-ml/main/images/octopus_know_your_data.png" width="540" height="460" /></center>
 
 Check out the octopus-ml demo notebook on Colab <a href="https://colab.research.google.com/drive/1T1T15AZe0w7Zcld_09jxg-Yhq2pBefVZ?usp=sharing"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="google colab logo"></a>
