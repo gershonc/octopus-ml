@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="octopus-ml",
-    version="3.0.0",
+    version="3.1.0",
     description="A collection of handy ML and data validation tools",
     long_description=long_description,
     long_description_content_type="text/markdown",
