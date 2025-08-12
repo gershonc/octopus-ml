@@ -27,7 +27,6 @@ The module can be easily installed with pip:
 This module depends on `Scikit-learn`, `NumPy`, `Pandas`, `TQDM`, `lightGBM` as defualt classifier. Optionally you can get also some nice visualisations if you have `Seaborn` installed.
 
 
-
 ## Usage
 The module contains ML and Data related methods:
 
@@ -41,8 +40,6 @@ from octopus_ml import plot_imp, adjusted_classes, cv, cv_plot, roc_curve_plot, 
 ## Selected visualizations:
 <br><center><img src="https://raw.githubusercontent.com/gershonc/octopus-ml/main/images/target_distribution_plot.png" width="520"/></center>
 <br><center><img src="https://raw.githubusercontent.com/gershonc/octopus-ml/main/images/histogram_on_target.png" width="520"/></center>
-
-
 <br><center><img src="https://raw.githubusercontent.com/gershonc/octopus-ml/main/images/oc_plot_roc.png" width="520"/></center>
 <br><center><img src="https://raw.githubusercontent.com/gershonc/octopus-ml/main/images/oc_plot_confusion_matrix.png" width="580" /></center>
 <br><center><img src="https://raw.githubusercontent.com/gershonc/octopus-ml/main/images/oc_plot_feature_imp.png" width="820"/></center>
